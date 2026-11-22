@@ -12,6 +12,7 @@ import specman.link.CopyStepLinkMenuItem;
 import specman.undo.UndoableFlatNumberingToggled;
 import specman.undo.UndoableMetaTagAssigned;
 import specman.undo.manager.UndoRecording;
+import specman.util.MouseEvents;
 import specman.view.AbstractSchrittView;
 import static specman.Specman.editor;
 
@@ -148,8 +149,17 @@ public class StepnumberContextMenu implements MouseListener {
   }
 
   @Override
-  public void mouseClicked(MouseEvent e) {
-    if (SwingUtilities.isRightMouseButton(e)) {
+  public void mousePressed(MouseEvent e) {
+    maybeShowPopup(e);
+  }
+
+  @Override
+  public void mouseReleased(MouseEvent e) {
+    maybeShowPopup(e);
+  }
+
+  private void maybeShowPopup(MouseEvent e) {
+    if (MouseEvents.isPopupTrigger(e)) {
       AbstractSchrittView step = editor().findStep(label(e));
       initMenuForStep(step, label(e));
       // Not showing means headless in unit tests: The initialized menu stays operable via popupMenu()
@@ -237,8 +247,7 @@ public class StepnumberContextMenu implements MouseListener {
     }
   }
 
-  @Override public void mousePressed(MouseEvent e) {}
-  @Override public void mouseReleased(MouseEvent e) {}
+  @Override public void mouseClicked(MouseEvent e) {}
   @Override public void mouseEntered(MouseEvent e) {}
   @Override public void mouseExited(MouseEvent e) {}
 }

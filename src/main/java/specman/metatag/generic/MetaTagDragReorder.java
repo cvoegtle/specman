@@ -4,6 +4,7 @@ import specman.metatag.MetaTagPanel;
 import specman.metatag.TagMoveDirection;
 import specman.undo.UndoableMetaTagMoved;
 import specman.undo.manager.UndoRecording;
+import specman.util.MouseEvents;
 import specman.view.AbstractSchrittView;
 
 import javax.swing.SwingUtilities;
@@ -38,7 +39,7 @@ class MetaTagDragReorder extends MouseAdapter {
     reordered = false;
     moves.clear();
     step = null;
-    if (SwingUtilities.isLeftMouseButton(e) && !tag.isDeleted()) {
+    if (MouseEvents.isPrimaryButton(e) && !tag.isDeleted()) {
       step = editor().findStep(tag);
     }
   }

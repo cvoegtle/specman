@@ -9,6 +9,7 @@ import specman.model.v002.PlantUmlImageEditAreaModel_V002;
 import specman.pdf.ShapeImage;
 import specman.undo.manager.UndoRecording;
 import specman.undo.props.UDBL;
+import specman.util.MouseEvents;
 
 import javax.swing.SwingUtilities;
 import java.awt.Color;
@@ -222,12 +223,27 @@ public class PlantUmlImageEditArea extends AbstractSvgImageEditArea {
   }
 
   @Override
-  public void mouseClicked(MouseEvent e) {
-    super.mouseClicked(e);
-    if (SwingUtilities.isRightMouseButton(e)) {
+  public void mousePressed(MouseEvent e) {
+    super.mousePressed(e);
+    if (MouseEvents.isPopupTrigger(e)) {
+      requestFocus();
       PlantUmlContextMenu.open(this, e);
     }
-    else if (e.getClickCount() == 2 && !getChangeInfo().isDeleted()) {
+  }
+
+  @Override
+  public void mouseReleased(MouseEvent e) {
+    super.mouseReleased(e);
+    if (MouseEvents.isPopupTrigger(e)) {
+      requestFocus();
+      PlantUmlContextMenu.open(this, e);
+    }
+  }
+
+  @Override
+  public void mouseClicked(MouseEvent e) {
+    super.mouseClicked(e);
+    if (MouseEvents.isPrimaryButton(e) && e.getClickCount() == 2 && !getChangeInfo().isDeleted()) {
       editSource();
     }
   }

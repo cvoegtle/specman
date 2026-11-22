@@ -6,6 +6,7 @@ import specman.StepButtonBar;
 import specman.editarea.InteractiveStepFragment;
 import specman.metatag.stepnumberlabel.BreakCatchScrollMouseAdapter;
 import specman.metatag.stepnumberlabel.StepnumberLabel;
+import specman.util.MouseEvents;
 import specman.view.AbstractSchrittView;
 
 import javax.swing.*;
@@ -32,7 +33,8 @@ public class DragMouseAdapter extends MouseAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (BreakCatchScrollMouseAdapter.userWantsToScroll(e)) {
+        floatingLabel = null;
+        if (!MouseEvents.isPrimaryButton(e) || BreakCatchScrollMouseAdapter.userWantsToScroll(e)) {
             return;
         }
         floatingLabel = new JTextField(floatingLabelText(e));
@@ -41,7 +43,7 @@ public class DragMouseAdapter extends MouseAdapter {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (BreakCatchScrollMouseAdapter.userWantsToScroll(e)) {
+        if (floatingLabel == null || BreakCatchScrollMouseAdapter.userWantsToScroll(e)) {
             return;
         }
         if (isDragGuarded(e)) {
@@ -64,10 +66,12 @@ public class DragMouseAdapter extends MouseAdapter {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (BreakCatchScrollMouseAdapter.userWantsToScroll(e)) {
+        if (floatingLabel == null || BreakCatchScrollMouseAdapter.userWantsToScroll(e)) {
+            floatingLabel = null;
             return;
         }
         if (isDragGuarded(e)) {
+            floatingLabel = null;
             specman.setCursor(Cursor.getDefaultCursor());
             return;
         }
@@ -82,6 +86,7 @@ public class DragMouseAdapter extends MouseAdapter {
             specman.showError(ex);
         }
         finally {
+            floatingLabel = null;
             specman.getGlassPane().setVisible(false);
             specman.setCursor(Cursor.getDefaultCursor());
         }

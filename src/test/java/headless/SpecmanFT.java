@@ -24,6 +24,7 @@ import specman.ops.buttons.CreateCatchSequenceADBLOpButton;
 import specman.ops.buttons.CreateBreakStepOpButton;
 import specman.ops.buttons.CreateSimpleStepOpButton;
 import specman.ops.buttons.CreateSubsequenceStepOpButton;
+import specman.util.MouseEvents;
 import specman.view.AbstractSchrittView;
 import specman.view.BreakSchrittView;
 import specman.view.EinfacherSchrittView;
@@ -380,7 +381,7 @@ public class SpecmanFT extends Specman {
     return StepnumberContextMenu.popupMenu().getComponents();
   }
 
-  private StepnumberLabel findStepnumberLabel(AbstractSchrittView step) {
+  public StepnumberLabel findStepnumberLabel(AbstractSchrittView step) {
     List<StepnumberLabel> labels = new ArrayList<>();
     collectComponents(this, StepnumberLabel.class, labels);
     for (StepnumberLabel label : labels) {
@@ -391,9 +392,26 @@ public class SpecmanFT extends Specman {
     throw new IllegalStateException("No step number label found for step " + step.getNumber());
   }
 
-  private static void rightClick(Component component) {
-    component.dispatchEvent(new MouseEvent(component, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(),
-      MouseEvent.BUTTON3_DOWN_MASK, 1, 1, 1, false, MouseEvent.BUTTON3));
+  public static void rightClick(Component component) {
+    long now = System.currentTimeMillis();
+    boolean mac = MouseEvents.isMac();
+    component.dispatchEvent(new MouseEvent(component, MouseEvent.MOUSE_PRESSED, now,
+      MouseEvent.BUTTON3_DOWN_MASK, 1, 1, 1, mac, MouseEvent.BUTTON3));
+    component.dispatchEvent(new MouseEvent(component, MouseEvent.MOUSE_RELEASED, now,
+      0, 1, 1, 1, !mac, MouseEvent.BUTTON3));
+    component.dispatchEvent(new MouseEvent(component, MouseEvent.MOUSE_CLICKED, now,
+      0, 1, 1, 1, false, MouseEvent.BUTTON3));
+  }
+
+  public static void ctrlLeftClick(Component component) {
+    long now = System.currentTimeMillis();
+    boolean mac = MouseEvents.isMac();
+    component.dispatchEvent(new MouseEvent(component, MouseEvent.MOUSE_PRESSED, now,
+      MouseEvent.BUTTON1_DOWN_MASK | MouseEvent.CTRL_DOWN_MASK, 1, 1, 1, mac, MouseEvent.BUTTON1));
+    component.dispatchEvent(new MouseEvent(component, MouseEvent.MOUSE_RELEASED, now,
+      MouseEvent.CTRL_DOWN_MASK, 1, 1, 1, false, MouseEvent.BUTTON1));
+    component.dispatchEvent(new MouseEvent(component, MouseEvent.MOUSE_CLICKED, now,
+      MouseEvent.CTRL_DOWN_MASK, 1, 1, 1, false, MouseEvent.BUTTON1));
   }
 
   private static <T extends Component> void collectComponents(Container container, Class<T> type, List<T> result) {

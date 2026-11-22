@@ -12,6 +12,7 @@ import specman.pdf.LabelShapeText;
 import specman.pdf.Shape;
 import specman.pdf.ShapeNote;
 import specman.undo.UndoableMetaTagFreetextChanged;
+import specman.util.MouseEvents;
 import specman.util.WrappedHtml;
 
 import javax.swing.BorderFactory;
@@ -74,7 +75,7 @@ public class GenericMetaTag extends AbstractMetaTag implements InteractiveStepFr
     addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        if (freetextEditable && !dragReorder.hasReordered() && SwingUtilities.isLeftMouseButton(e)) {
+        if (freetextEditable && !dragReorder.hasReordered() && MouseEvents.isPrimaryButton(e)) {
           editFreetext();
         }
       }

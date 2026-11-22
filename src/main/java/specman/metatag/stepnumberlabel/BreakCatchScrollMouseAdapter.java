@@ -1,5 +1,6 @@
 package specman.metatag.stepnumberlabel;
 
+import specman.util.MouseEvents;
 import specman.view.AbstractSchrittView;
 import specman.view.BreakSchrittView;
 import specman.view.CatchBereich;
@@ -18,13 +19,17 @@ public class BreakCatchScrollMouseAdapter extends MouseAdapter {
   static BreakCatchScrollMouseAdapter instance = new BreakCatchScrollMouseAdapter();
 
   public static boolean userWantsToScroll(MouseEvent e) {
-    return e.isControlDown() && e.getSource() instanceof StepnumberLabel;
+    return MouseEvents.isStepLinkModifierDown(e) && e.getSource() instanceof StepnumberLabel;
+  }
+
+  private static String scrollTooltip() {
+    return i18n(MouseEvents.isMac() ? "tooltip.stepnumber.scroll.mac" : "tooltip.stepnumber.scroll");
   }
 
   @Override
   public void mouseEntered(MouseEvent e) {
     if (userWantsToScroll(e) && stepRefersToOtherStep(e)) {
-      setTooltipAndCursor(e, SCROLL_TOOLTIP, SCROLL_CURSOR);
+      setTooltipAndCursor(e, scrollTooltip(), SCROLL_CURSOR);
     }
   }
 
@@ -43,7 +48,7 @@ public class BreakCatchScrollMouseAdapter extends MouseAdapter {
 
   @Override
   public void mouseClicked(MouseEvent e) {
-    if (userWantsToScroll(e)) {
+    if (MouseEvents.isPrimaryButton(e) && userWantsToScroll(e)) {
       StepnumberLabel stepnumberLabel = source(e);
       AbstractSchrittView step = editor().findStep(stepnumberLabel);
       if (step instanceof BreakSchrittView) {
