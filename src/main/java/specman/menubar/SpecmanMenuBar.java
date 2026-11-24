@@ -7,6 +7,7 @@ import specman.graphics.SpecmanIcons;
 import specman.i18n.IMenu;
 import specman.i18n.IMenuItem;
 import specman.ops.SpecmanOpContext;
+import specman.util.Shortcuts;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -43,34 +44,34 @@ public class SpecmanMenuBar extends JMenuBar {
 
   private @NotNull JMenu createFileMenu(SpecmanOpContext context) {
     JMenuItem neu = new IMenuItem(NEW_ITEM, icon(SpecmanIcons.FILE_NEW));
-    neu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
+    neu.setAccelerator(Shortcuts.menuShortcut(KeyEvent.VK_N));
     neu.addActionListener(e -> context.diagrammNeu());
 
     JMenuItem laden = new IMenuItem(LOAD_ITEM, icon(SpecmanIcons.FILE_OPEN));
-    laden.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+    laden.setAccelerator(Shortcuts.menuShortcut(KeyEvent.VK_O));
     laden.addActionListener(e -> context.diagrammLaden());
 
     JMenuItem speichern = new IMenuItem(SAVE_ITEM, icon(SpecmanIcons.FILE_SAVE));
-    speichern.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+    speichern.setAccelerator(Shortcuts.menuShortcut(KeyEvent.VK_S));
     speichern.addActionListener(e -> context.diagrammSpeichern(false));
 
     JMenuItem speichernUnter = new IMenuItem(SAVE_AS_ITEM, icon(SpecmanIcons.FILE_SAVE_AS));
-    speichernUnter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
+    speichernUnter.setAccelerator(Shortcuts.menuShortcut(KeyEvent.VK_S, KeyEvent.SHIFT_DOWN_MASK));
     speichernUnter.addActionListener(e -> context.diagrammSpeichern(true));
 
     JMenuItem exportAsPDF = new IMenuItem(EXPORT_PDF_ITEM);
-    exportAsPDF.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
+    exportAsPDF.setAccelerator(Shortcuts.menuShortcut(KeyEvent.VK_E));
     exportAsPDF.addActionListener(e -> context.exportAsPDF());
 
     JMenuItem exportAsGraphviz = new IMenuItem(EXPORT_GRAPHVIZ_ITEM);
     exportAsGraphviz.addActionListener(e -> context.exportAsGraphviz());
 
     JMenuItem openLink = new IMenuItem(OPEN_LINK_ITEM);
-    openLink.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
+    openLink.setAccelerator(Shortcuts.menuShortcut(KeyEvent.VK_L));
     openLink.addActionListener(e -> context.navigateToLinkInClipboard());
 
     JMenuItem exit = new IMenuItem(EXIT_ITEM, icon(SpecmanIcons.EXIT));
-    exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
+    exit.setAccelerator(Shortcuts.exitKeyStroke());
     exit.addActionListener(e -> context.exit());
 
     JMenuItem metaTags = new IMenuItem(META_TAGS_ITEM);
@@ -80,6 +81,10 @@ public class SpecmanMenuBar extends JMenuBar {
     aliases.addActionListener(e -> context.openAliases());
 
     JMenuItem settings = new IMenuItem(SETTINGS_ITEM, icon(SpecmanIcons.SETTINGS));
+    KeyStroke settingsAccelerator = Shortcuts.settingsKeyStroke();
+    if (settingsAccelerator != null) {
+      settings.setAccelerator(settingsAccelerator);
+    }
     settings.addActionListener(e -> context.openSettings());
 
     JMenu dateiMenu = new IMenu(FILE_MENU);

@@ -4,6 +4,7 @@ import static specman.ChangeSet.changeset;
 import specman.editarea.TextEditArea;
 import specman.editarea.document.WrappedPosition;
 import specman.editarea.focusmover.CrossEditAreaFocusMoverFromText;
+import specman.util.Shortcuts;
 import specman.view.AbstractSchrittView;
 
 import javax.swing.text.MutableAttributeSet;
@@ -25,13 +26,13 @@ public class TextEditAreaKeyListener extends AbstractKeyHandler implements KeyLi
 
   @Override
   public void keyPressed(KeyEvent e) {
-    if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_C) {
+    if (Shortcuts.isShortcut(e, KeyEvent.VK_C)) {
       keyCopyPressed(e);
     }
-    if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+    if (Shortcuts.isShortcut(e, KeyEvent.VK_V)) {
       keyPastePressed(e);
     }
-    if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_X) {
+    if (Shortcuts.isShortcut(e, KeyEvent.VK_X)) {
       keyCutPressed(e);
     }
     switch (e.getKeyCode()) {

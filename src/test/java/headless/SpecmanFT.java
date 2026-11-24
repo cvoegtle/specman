@@ -25,6 +25,7 @@ import specman.ops.buttons.CreateBreakStepOpButton;
 import specman.ops.buttons.CreateSimpleStepOpButton;
 import specman.ops.buttons.CreateSubsequenceStepOpButton;
 import specman.util.MouseEvents;
+import specman.util.Shortcuts;
 import specman.view.AbstractSchrittView;
 import specman.view.BreakSchrittView;
 import specman.view.EinfacherSchrittView;
@@ -660,9 +661,9 @@ public class SpecmanFT extends Specman {
     addressesOpenedInBrowser.add(address);
   }
 
-  /** Simulates the user pressing the mouse button on the first visible character of the text while holding CTRL. */
+  /** Simulates the user pressing the mouse button on the first visible character of the text while holding the platform link modifier (Cmd on macOS, Ctrl elsewhere). */
   public void ctrlClickOnFirstCharacter(TextEditArea text) {
-    pressMouseOnFirstCharacter(text, MouseEvent.CTRL_DOWN_MASK);
+    pressMouseOnFirstCharacter(text, Shortcuts.menuShortcutMask());
   }
 
   /** Simulates the user pressing the mouse button on the first visible character of the text. */

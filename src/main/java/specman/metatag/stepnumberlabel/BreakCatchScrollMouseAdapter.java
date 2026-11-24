@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.util.Objects;
 
 public class BreakCatchScrollMouseAdapter extends MouseAdapter {
-  public static final String SCROLL_TOOLTIP = i18n("tooltip.stepnumber.scroll");
   public static final Cursor SCROLL_CURSOR = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 
   static BreakCatchScrollMouseAdapter instance = new BreakCatchScrollMouseAdapter();
@@ -22,7 +21,7 @@ public class BreakCatchScrollMouseAdapter extends MouseAdapter {
     return MouseEvents.isStepLinkModifierDown(e) && e.getSource() instanceof StepnumberLabel;
   }
 
-  private static String scrollTooltip() {
+  public static String scrollTooltip() {
     return i18n(MouseEvents.isMac() ? "tooltip.stepnumber.scroll.mac" : "tooltip.stepnumber.scroll");
   }
 

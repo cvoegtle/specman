@@ -29,6 +29,8 @@ import specman.undo.UndoableStepnumberLinkAdded;
 import specman.undo.UndoableStepnumberLinkRemoved;
 import specman.undo.manager.UndoRecording;
 import specman.undo.props.UDBL;
+import specman.util.MouseEvents;
+import specman.util.Shortcuts;
 import specman.view.AbstractSchrittView;
 import specman.view.CatchUeberschrift;
 
@@ -108,7 +110,7 @@ public class TextEditArea extends JEditorPane implements EditArea<TextEditAreaMo
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-            if (e.isControlDown()) {
+            if (MouseEvents.isStepLinkModifierDown(e)) {
                 if (stepnumberLinkStyleSetAt(getWrappedCaretPosition())) {
                     scrollToStepnumber();
                 }
@@ -155,7 +157,7 @@ public class TextEditArea extends JEditorPane implements EditArea<TextEditAreaMo
 
         EditorI editor = editor();
         Cursor cursorToUse;
-        if (editor.isKeyPressed(KeyEvent.VK_CONTROL) && isFollowableLink(hoveredElement)) {
+        if (editor.isKeyPressed(Shortcuts.linkModifierKeyCode()) && isFollowableLink(hoveredElement)) {
             cursorToUse = BreakCatchScrollMouseAdapter.SCROLL_CURSOR;
         } else {
             cursorToUse = Cursor.getDefaultCursor();
@@ -171,7 +173,7 @@ public class TextEditArea extends JEditorPane implements EditArea<TextEditAreaMo
     @Override
     public String getToolTipText() {
         if (isFollowableLink(hoveredElement)) {
-            return BreakCatchScrollMouseAdapter.SCROLL_TOOLTIP;
+            return BreakCatchScrollMouseAdapter.scrollTooltip();
         }
         return super.getToolTipText();
     }

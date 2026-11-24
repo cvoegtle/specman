@@ -1,7 +1,7 @@
 package specman.editarea;
 
-import specman.Specman;
 import specman.undo.manager.UndoRecording;
+import specman.util.Shortcuts;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,8 +18,8 @@ import static specman.CursorFactory.HotspotPlacement.BottomRight;
 import static specman.CursorFactory.HotspotPlacement.Right;
 import static specman.CursorFactory.HotspotPlacement.Top;
 import static specman.CursorFactory.createCursor;
-import static specman.view.AbstractSchrittView.LINIENBREITE;
 import static specman.Specman.editor;
+import static specman.view.AbstractSchrittView.LINIENBREITE;
 
 public class TableEditAreaSelectionTracker implements MouseListener, MouseMotionListener, KeyEventDispatcher {
   private static final Color SELECTION_COLOR = new Color(200, 200, 200, 150);
@@ -116,13 +116,13 @@ public class TableEditAreaSelectionTracker implements MouseListener, MouseMotion
     if (e.getID() != KeyEvent.KEY_PRESSED || selectionOperation != Operation.RemoveTable) {
       return false;
     }
-    if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_C) {
+    if (Shortcuts.isShortcut(e, KeyEvent.VK_C)) {
       return performAndConsume(e, () -> editor().copyTableToClipboard(editArea));
     }
-    if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_X) {
+    if (Shortcuts.isShortcut(e, KeyEvent.VK_X)) {
       return performAndConsume(e, () -> editor().cutTableToClipboard(editArea));
     }
-    if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+    if (Shortcuts.isDeleteKey(e)) {
       return performAndConsume(e, this::removeTableWithUndo);
     }
     return false;

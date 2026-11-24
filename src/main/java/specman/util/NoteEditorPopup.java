@@ -78,7 +78,7 @@ public class NoteEditorPopup extends JPopupMenu {
     add(contentPanel);
 
     bindKey(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel", this::cancel);
-    bindKey(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK), "commit", () -> setVisible(false));
+    bindKey(Shortcuts.menuShortcut(KeyEvent.VK_ENTER), "commit", () -> setVisible(false));
 
     textArea.addFocusListener(new FocusAdapter() {
       @Override

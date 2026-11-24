@@ -2,7 +2,9 @@ package specman.editarea.image.plantuml;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import specman.graphics.Styles;
+import specman.util.MouseEvents;
 import specman.util.NoteEditorPopup;
+import specman.util.Shortcuts;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -58,6 +60,9 @@ public class PlantUmlSourceEditorPopup extends NoteEditorPopup {
     setBelowText(statusLabel);
     problemCheckTimer.setRepeats(false);
     bindKey(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "preview", this::preview);
+    if (MouseEvents.isMac()) {
+      bindKey(Shortcuts.menuShortcut(KeyEvent.VK_R), "preview", this::preview);
+    }
   }
 
   /** The font is given for 100% zoom and follows the editor's zoom. It is proportional, because a monospaced font is
@@ -101,7 +106,8 @@ public class PlantUmlSourceEditorPopup extends NoteEditorPopup {
 
   private void showStatus(String problem) {
     statusLabel.setForeground(problem != null ? Styles.PROBLEM_COLOR : HINT_COLOR);
-    statusLabel.setText(wrappedToTextWidth(problem != null ? problem : i18n("msg.plantuml.hint")));
+    String hintKey = MouseEvents.isMac() ? "msg.plantuml.hint.mac" : "msg.plantuml.hint";
+    statusLabel.setText(wrappedToTextWidth(problem != null ? problem : i18n(hintKey)));
     pack();
   }
 

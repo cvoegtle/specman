@@ -21,6 +21,7 @@ import specman.pdf.ShapeBitmapImage;
 import specman.pdf.ShapeImage;
 import specman.undo.manager.UndoRecording;
 import specman.undo.props.UDBL;
+import specman.util.Shortcuts;
 import specman.visitor.DiagramVisitor;
 import specman.visitor.StopTraversalException;
 
@@ -158,7 +159,7 @@ public abstract class AbstractImageEditArea extends JPanel implements EditArea<A
   }
 
   private void keyCopyPressed(KeyEvent e) {
-    if (e.isControlDown()) {
+    if (Shortcuts.isShortcut(e, KeyEvent.VK_C)) {
       Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
       clipboard.setContents(new ImageClipboardSelection(getFullSizeImage()), null);
       e.consume();
@@ -166,8 +167,10 @@ public abstract class AbstractImageEditArea extends JPanel implements EditArea<A
   }
 
   private void keyCutPressed(KeyEvent e) {
-    if (e.isControlDown()) {
-      keyCopyPressed(e);
+    if (Shortcuts.isShortcut(e, KeyEvent.VK_X)) {
+      Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+      clipboard.setContents(new ImageClipboardSelection(getFullSizeImage()), null);
+      e.consume();
       deleteUDBL();
     }
   }

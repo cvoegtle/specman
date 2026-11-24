@@ -2,6 +2,7 @@ package net.atlanticbb.tantlinger.ui.text;
 
 import specman.graphics.IconReader;
 import specman.graphics.SpecmanIcons;
+import specman.util.Shortcuts;
 
 import net.atlanticbb.tantlinger.i18n.I18n;
 
@@ -150,7 +151,7 @@ public class CompoundUndoManager implements UndoableEditListener {
       this.putValue("LARGE_ICON", IconReader.readSvgIcon(SpecmanIcons.REDO, SpecmanIcons.SIZE_TOOLBAR));
       this.putValue("MnemonicKey", (int) CompoundUndoManager.i18n.mnem("redo"));
       this.setEnabled(false);
-      this.putValue("AcceleratorKey", KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
+      this.putValue(Action.ACCELERATOR_KEY, Shortcuts.redoKeyStroke());
       this.putValue("ShortDescription", this.getValue("Name"));
     }
 
@@ -184,7 +185,7 @@ public class CompoundUndoManager implements UndoableEditListener {
       this.putValue("LARGE_ICON", IconReader.readSvgIcon(SpecmanIcons.UNDO, SpecmanIcons.SIZE_TOOLBAR));
       this.putValue("MnemonicKey", (int) CompoundUndoManager.i18n.mnem("undo"));
       this.setEnabled(false);
-      this.putValue("AcceleratorKey", KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK));
+      this.putValue(Action.ACCELERATOR_KEY, Shortcuts.menuShortcut(KeyEvent.VK_Z));
       this.putValue("ShortDescription", this.getValue("Name"));
     }
 

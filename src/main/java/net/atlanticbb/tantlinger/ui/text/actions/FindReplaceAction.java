@@ -4,12 +4,14 @@ import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.Action;
 import javax.swing.JEditorPane;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 
 import net.atlanticbb.tantlinger.ui.text.dialogs.TextFinderDialog;
+import specman.util.Shortcuts;
 
 public class FindReplaceAction extends BasicEditAction {
   private static final long serialVersionUID = 1L;
@@ -24,7 +26,7 @@ public class FindReplaceAction extends BasicEditAction {
     } else {
       this.putValue("Name", i18n.str("find_"));
       this.putValue("MnemonicKey", Integer.valueOf(i18n.mnem("find_")));
-      this.putValue("AcceleratorKey", KeyStroke.getKeyStroke(70, 2));
+      this.putValue(Action.ACCELERATOR_KEY, Shortcuts.menuShortcut(KeyEvent.VK_F));
     }
 
     this.isReplaceTab = isReplace;

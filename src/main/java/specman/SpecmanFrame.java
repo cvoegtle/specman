@@ -4,10 +4,13 @@ import specman.graphics.IconReader;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.desktop.QuitResponse;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.function.BooleanSupplier;
 
 /**
  * The application window around a {@link Specman} instance. Everything which needs a real window
@@ -42,6 +45,29 @@ public class SpecmanFrame extends JFrame {
         }
       }
     });
+    installQuitHandler(specman);
+  }
+
+  /**
+   * On macOS, Cmd+Q and the application menu's Quit action bypass {@code WINDOW_CLOSING} by default
+   * and terminate the JVM directly. Registering a {@link java.awt.desktop.QuitHandler} routes them
+   * through {@link Specman#confirmClose()} so unsaved changes prompt for confirmation and any
+   * autosave working copy is cleaned up.
+   */
+  private void installQuitHandler(Specman specman) {
+    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.APP_QUIT_HANDLER)) {
+      Desktop.getDesktop().setQuitHandler((e, response) ->
+        handleQuitRequest(specman::confirmClose, this::dispose, response));
+    }
+  }
+
+  static void handleQuitRequest(BooleanSupplier confirmClose, Runnable onQuit, QuitResponse response) {
+    if (confirmClose.getAsBoolean()) {
+      onQuit.run();
+      response.performQuit();
+    } else {
+      response.cancelQuit();
+    }
   }
 
   /** Windows doesn't let a process which another one started take the foreground, so a Specman instance started for

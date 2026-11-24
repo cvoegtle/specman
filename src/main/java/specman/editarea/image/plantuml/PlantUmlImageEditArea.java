@@ -10,6 +10,7 @@ import specman.pdf.ShapeImage;
 import specman.undo.manager.UndoRecording;
 import specman.undo.props.UDBL;
 import specman.util.MouseEvents;
+import specman.util.Shortcuts;
 
 import javax.swing.SwingUtilities;
 import java.awt.Color;
@@ -213,7 +214,7 @@ public class PlantUmlImageEditArea extends AbstractSvgImageEditArea {
 
   @Override
   public void keyPressed(KeyEvent e) {
-    if (e.getKeyCode() == KeyEvent.VK_F5) {
+    if (Shortcuts.isPlantUmlRefresh(e)) {
       reload();
       e.consume();
     }

@@ -6,6 +6,7 @@ import specman.graphics.SpecmanIcons;
 import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.DefaultAction;
 import net.atlanticbb.tantlinger.ui.ShefIconInstaller;
+import net.atlanticbb.tantlinger.ui.ShefShortcutInstaller;
 import net.atlanticbb.tantlinger.ui.text.CompoundUndoManager;
 import net.atlanticbb.tantlinger.ui.text.HTMLUtils;
 import net.atlanticbb.tantlinger.ui.text.WysiwygHTMLEditorKit;
@@ -275,6 +276,7 @@ public class HTMLEditorPane extends JPanel
             .map(AbstractButton.class::cast)
             .forEach(toolbarButtons::add);
     ShefIconInstaller.install(actionList, toolbarButtons);
+    ShefShortcutInstaller.install(actionList);
   }
 
   private void createToolbarComponents(ActionList blockActs, ActionList fontSizeActs)
